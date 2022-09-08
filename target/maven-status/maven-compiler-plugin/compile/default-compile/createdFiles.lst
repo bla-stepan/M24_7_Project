@@ -1,0 +1,5 @@
+Main.class
+io\FileReader.class
+model\University.class
+model\Student.class
+enums\StudyProfile.class

@@ -1,15 +1,22 @@
 package model;
 
+import enums.StudyProfile;
+
 public class University {
     String id, fullName, shortName;
-    int yearOfFoundation, StudyProfile, mainProfile;
+    int yearOfFoundation;
+    StudyProfile mainProfile;
 
-    public University(String id, String fullName, String shortName, int yearOfFoundation, int studyProfile, int mainProfile) {
+
+    public University() {
+    }
+
+    public University(String id, String fullName, String shortName, int yearOfFoundation, StudyProfile mainProfile) {
         this.id = id;
         this.fullName = fullName;
         this.shortName = shortName;
         this.yearOfFoundation = yearOfFoundation;
-        StudyProfile = studyProfile;
+        //StudyProfile = studyProfile;
         this.mainProfile = mainProfile;
     }
 
@@ -45,31 +52,29 @@ public class University {
         this.yearOfFoundation = yearOfFoundation;
     }
 
-    public int getStudyProfile() {
-        return StudyProfile;
-    }
+//    public int getStudyProfile() {
+//        return StudyProfile;
+//    }
 
-    public void setStudyProfile(int studyProfile) {
-        StudyProfile = studyProfile;
-    }
+//    public void setStudyProfile(StudyProfile mainProfile) {
+//        mainProfile = mainProfile;
+//    }
 
-    public int getMainProfile() {
+    public StudyProfile getMainProfile() {
         return mainProfile;
     }
 
-    public void setMainProfile(int mainProfile) {
+    public void setMainProfile(StudyProfile mainProfile) {
         this.mainProfile = mainProfile;
     }
 
     @Override
     public String toString() {
-        return "model.University{" +
-                "id='" + id + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", shortName='" + shortName + '\'' +
-                ", yearOfFoundation=" + yearOfFoundation +
-                ", enums.StudyProfile=" + StudyProfile +
-                ", mainProfile=" + mainProfile +
-                '}';
+        return String.format("id: %s, название: %s (%s), основан в %dг., профиль: %s",
+                id,
+                fullName,
+                shortName,
+                yearOfFoundation,
+                mainProfile.getProfileName());
     }
 }

@@ -5,6 +5,8 @@ public class Student {
     int currentCourseNumber;
     float avgExamScore;
 
+    public Student(){}
+
     public Student(String fullName, String universityId, int currentCourseNumber, float avgExamScore) {
         this.fullName = fullName;
         this.universityId = universityId;
@@ -46,11 +48,10 @@ public class Student {
 
     @Override
     public String toString() {
-        return "model.Student{" +
-                "fullName='" + fullName + '\'' +
-                ", universityId='" + universityId + '\'' +
-                ", currentCourseNumber=" + currentCourseNumber +
-                ", avgExamScore=" + avgExamScore +
-                '}';
+        return String.format("Студент (%s), id ВУЗа: %s, текущий курс: %d, средний балл (%s)",
+                fullName,
+                universityId,
+                currentCourseNumber,
+                avgExamScore);
     }
 }
