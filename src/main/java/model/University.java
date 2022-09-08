@@ -1,17 +1,8 @@
+package model;
+
 public class University {
     String id, fullName, shortName;
     int yearOfFoundation, StudyProfile, mainProfile;
-
-    public enum StudyProfile {
-        MTEMATIKA("Математика"),
-        MEDICINA("Медицина"),
-        JAVA("Java-разработчик"),
-        FIZICA("Физика");
-
-        StudyProfile(String profileName) {
-
-        }
-    }
 
     public University(String id, String fullName, String shortName, int yearOfFoundation, int studyProfile, int mainProfile) {
         this.id = id;
@@ -72,12 +63,12 @@ public class University {
 
     @Override
     public String toString() {
-        return "University{" +
+        return "model.University{" +
                 "id='" + id + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", shortName='" + shortName + '\'' +
                 ", yearOfFoundation=" + yearOfFoundation +
-                ", StudyProfile=" + StudyProfile +
+                ", enums.StudyProfile=" + StudyProfile +
                 ", mainProfile=" + mainProfile +
                 '}';
     }
