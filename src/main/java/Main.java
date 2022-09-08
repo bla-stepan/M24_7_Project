@@ -2,7 +2,7 @@ import io.FileReader;
 import model.Student;
 import model.University;
 
-import javax.imageio.IIOException;
+
 import java.io.IOException;
 import java.util.List;
 
