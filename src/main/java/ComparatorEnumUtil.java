@@ -4,8 +4,8 @@ import enums.UniversityComparatorEnum;
 
 public class ComparatorEnumUtil {
 
-//    private ComparatorEnumUtil() {
-//    }
+    private ComparatorEnumUtil() {
+    }
 
     //метод для студентов
     public static StudentComparator getStudentComparator(StudentComparatorEnum studentComparatorEnum) {
