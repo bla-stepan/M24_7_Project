@@ -32,5 +32,7 @@ public class Main {
         for (University university: universityList){
             System.out.println(university);
         }
+
+        //реализовать получение
     }
 }
