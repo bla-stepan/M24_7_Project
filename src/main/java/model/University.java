@@ -52,14 +52,6 @@ public class University {
         this.yearOfFoundation = yearOfFoundation;
     }
 
-//    public int getStudyProfile() {
-//        return StudyProfile;
-//    }
-
-//    public void setStudyProfile(StudyProfile mainProfile) {
-//        mainProfile = mainProfile;
-//    }
-
     public StudyProfile getMainProfile() {
         return mainProfile;
     }
