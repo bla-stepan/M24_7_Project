@@ -5,6 +5,8 @@ import enums.UniversityComparatorEnum;
 import io.FileReader;
 import model.Student;
 import model.University;
+import util.ComparatorEnumUtil;
+import util.JsonUtil;
 
 
 import java.io.IOException;
@@ -35,6 +37,10 @@ public class Main {
 //        }
         universityList.stream().sorted(universityComparator).forEach(System.out::println);
 
+        //реализовать сериализацию коллекций и вывести json в консоль
+        System.out.println("реализовать сериализацию коллекций и вывести json в консоль");
+        System.out.println(JsonUtil.studentListToJson(studentList));
+        System.out.println(JsonUtil.universityListToJaon(universityList));
 
 
     }
