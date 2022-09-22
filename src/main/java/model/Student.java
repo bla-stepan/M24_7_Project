@@ -1,8 +1,15 @@
 package model;
 
+import com.google.gson.annotations.SerializedName;
+//пункт 11 добавить аннотацию @SerializedName для каждого поля для изменения названия поля в сериализованном json
 public class Student {
-    String fullName, universityId;
-    int currentCourseNumber;
+    @SerializedName("Ф.И.О. студента")
+    private String fullName;
+    @SerializedName("universityId")
+    private String universityId;
+    @SerializedName("course")
+    private int currentCourseNumber;
+    @SerializedName("score")
     float avgExamScore;
 
     public Student(){}

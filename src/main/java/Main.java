@@ -15,6 +15,7 @@ import java.util.List;
 public class Main {
 
     static final String fileName = "src/main/resources/universityInfo.xlsx";
+
     public static void main(String[] args) throws IOException {
 
         //создаем list для студентов задаем методом из класса чтения файла
@@ -37,11 +38,32 @@ public class Main {
 //        }
         universityList.stream().sorted(universityComparator).forEach(System.out::println);
 
-        //реализовать сериализацию коллекций и вывести json в консоль
+        //пункт 4 реализовать сериализацию коллекций и вывести json в консоль
         System.out.println("реализовать сериализацию коллекций и вывести json в консоль");
-        System.out.println(JsonUtil.studentListToJson(studentList));
-        System.out.println(JsonUtil.universityListToJaon(universityList));
+        String jsonStudentList = JsonUtil.studentListToJson(studentList);
+        String jsonUniversityList = JsonUtil.universityListToJaon(universityList);
 
+        //пункт 5 выполнить десериализацию полученных строк, сохранить результат в новой коллекции
+        List<Student> newStudentListFromJson = JsonUtil.studentListFromJson(jsonStudentList);
+        List<University> newUniversityListFromJson = JsonUtil.universityListFromJson(jsonUniversityList);
 
+        //пункт 6 Сравнить количество элементов в исходной и десериализованной коллекции, для проверки корректности десериализации
+        System.out.println(String.format("Проверка: совпадение числа элементов старой и новой коллекций (студенты) - %s", studentList.size() == newStudentListFromJson.size()));
+        System.out.println(String.format("Проверка: совпадение числа элементов старой и новой коллекций (ВУЗ) - %s", universityList.size() == newUniversityListFromJson.size()));
+
+        //пункт 7 С помощью java stream api выполнить для коллекций сериализацию отдельных элементов
+        studentList.stream().forEach(student -> {
+            String studentToJson = JsonUtil.serializationStudent(student);//пункт 7 сериализация
+            System.out.println(studentToJson);//пункт 8 печатаем сериализоваенный файл
+            Student jsonToStudent = JsonUtil.studentFromJson(studentToJson);//пункт 9 десериализуем из json
+            System.out.println(jsonToStudent);//пункт 10 проверка
+        });
+        System.out.println("==========ВУЗЫ==========");
+        universityList.forEach(university -> {
+            String universityToJson = JsonUtil.serializationUniversity(university);
+            System.out.println(universityToJson);
+            University jsonToUniversity = JsonUtil.universityFromJson(universityToJson);
+            System.out.println(jsonToUniversity);
+        });
     }
 }

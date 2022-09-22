@@ -1,12 +1,20 @@
 package model;
 
+import com.google.gson.annotations.SerializedName;
 import enums.StudyProfile;
 
 public class University {
-    String id, fullName, shortName;
-    int yearOfFoundation;
-    StudyProfile mainProfile;
-
+    //пункт 11 добавить аннотацию @SerializedName для каждого поля для изменения названия поля в сериализованном json
+    @SerializedName("id")
+    private String id;
+    @SerializedName("полное название")
+    private String fullName;
+    @SerializedName("сокращенное название")
+    private String shortName;
+    @SerializedName("year")
+    private int yearOfFoundation;
+    @SerializedName("profile")
+    private StudyProfile mainProfile;
 
     public University() {
     }
