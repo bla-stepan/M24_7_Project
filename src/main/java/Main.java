@@ -3,14 +3,19 @@ import comparator.UniversityComparator;
 import enums.StudentComparatorEnum;
 import enums.UniversityComparatorEnum;
 import io.FileReader;
+import io.XlsWriter;
+import model.Statistics;
 import model.Student;
 import model.University;
 import util.ComparatorEnumUtil;
 import util.JsonUtil;
+import util.StudUniverToStatisticUtil;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class Main {
 
@@ -65,5 +70,10 @@ public class Main {
             University jsonToUniversity = JsonUtil.universityFromJson(universityToJson);
             System.out.println(jsonToUniversity);
         });
+
+        //11. Вызвать в методе main обработку статистики, получить коллекцию с элементами статистики, передать
+        // коллекцию в метод генерации XLSX-файла.
+        List<Statistics> statisticsList = StudUniverToStatisticUtil.getStatisticList(studentList, universityList);
+        XlsWriter.tableGenerator(statisticsList, "src/main/resources/statisticInfo.xlsx");
     }
 }
