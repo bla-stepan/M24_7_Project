@@ -12,6 +12,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.*;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 //пункт 2 задания 27.8
 //Создать класс XlsWriter, в котором реализовать метод генерации таблицы и её записи в файл. Метод получает на вход
@@ -20,13 +22,16 @@ public class XlsWriter {
     //путь к файлу
     //private final  String filePath ="src/main/resources/statisticsInfo.xlsx";
     //конструктор
-    private XlsWriter(){};
+    private XlsWriter() {
+    }
+
+    public static final Logger log = Logger.getLogger(XlsWriter.class.getName());
 
     //метод генерации таблицы
     public static void tableGenerator(List<Statistics> statisticsList, String filePath) throws IOException {
-        //пункт 3 задания
-        /* Вместо получения Workbook из стрима достаточно использовать оператор new с пустым конструктором книги.
-        Затем для этой книги можно вызвать метод createSheet и задать название листа.*/
+        //логг при создании файла
+        log.log(Level.INFO, "Начало создания файла статистики");
+
         XSSFWorkbook workbook = new XSSFWorkbook();//создали книгу
         XSSFSheet statisticSheet = workbook.createSheet("Статистика");//создаем лист
         //создаем параметры шрифта заголовка (Шрифт создаётся методом createFont(), экземпляр этого класса заполняется желаемыми значениями.)
@@ -43,7 +48,7 @@ public class XlsWriter {
         Для использования стиля используется метод setCellStyle(), вызываемый у ячейки. */
 
         //создаем строку заглавную
-        int rowNum=0;
+        int rowNum = 0;
         Row rowHeader = statisticSheet.createRow(rowNum++);
         //создаем колонки
         Cell profile = rowHeader.createCell(0);//создаем столбец
@@ -72,7 +77,7 @@ public class XlsWriter {
 
         //4. реализовать заполнение строк таблицы данными, хранящимися в коллекции элементов Statistics.
 //        int rowNum = 1;
-        for (Statistics statistics: statisticsList) {
+        for (Statistics statistics : statisticsList) {
             Row row = statisticSheet.createRow(rowNum++);//создаем строку
             Cell profileRow = row.createCell(0);//создаем в строке столбец
             profileRow.setCellValue(statistics.getProfile().getProfileName());//передаем данные профиля и енум метод гет
@@ -86,6 +91,12 @@ public class XlsWriter {
             universityNameRow.setCellValue(statistics.getUniversityName());
         }
         //Чтобы создать файл по сгенерированной книге, нужно вызвать у книги метод write() и передать ему поток FileOutputStream.
-        workbook.write(new FileOutputStream(filePath));
+        //логг длля обработки исключения
+        try {
+            workbook.write(new FileOutputStream(filePath));
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "Возникла проблема с записью в файл (" + filePath + ")", e);
+        }
+        log.log(Level.INFO, "Запись в файл " + filePath + " успешно завершена");
     }
 }

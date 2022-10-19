@@ -12,15 +12,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 //6. Создать утилитный класс для обработки коллекций студентов и университетов.
 public class StudUniverToStatisticUtil {
-    //В утилитном классе необходимо реализовать метод, получающий на вход коллекции студентов и университетов, возвращающий
-    //коллекцию элементов класса Statistics.
+
+    public StudUniverToStatisticUtil() {
+    }
+    //создаем логгер
+    public  static final Logger log = Logger.getLogger(StudUniverToStatisticUtil.class.getName());
+
     public static List<Statistics> getStatisticList(List<Student> students, List<University> universities) {
-        //пункт 8. задания 27.8
-        //создаем коллекцию для возврата
+
+        //ставим логер на старт и на конец
+        log.log(Level.INFO, "Начат процесс формирования статистики");
         List<Statistics> statisticsList = new ArrayList<>();
         //поток для прифилей
         Set<StudyProfile> profiles = universities.stream()
@@ -61,6 +68,7 @@ public class StudUniverToStatisticUtil {
             avgScore.ifPresent(value ->
                     statistics.setAvgExamScore((float) BigDecimal.valueOf(value).setScale(2, RoundingMode.HALF_UP).doubleValue()));
         });
+        log.log(Level.INFO, String.format("Формирование статистики успешно завершено (сформирован список из %s элементов)", statisticsList.size()));
         return statisticsList;
     }
 }
