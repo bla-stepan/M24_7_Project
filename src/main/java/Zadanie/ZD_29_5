@@ -1,0 +1,201 @@
+29.5. Проект
+
+Маршаллинг классов, работа с XML, построение структуры XML-документа, подготовка к взаимодействию с внешними системами,
+работа с файловой системой В заключительной части работы над проектом мы научимся выполнять преобразование данных в
+формат XML. Этот формат также часто используется для взаимодействия между системами. Мы научимся строить структуру таких
+документов и заполнять их значениями из Java-объектов. Также вспомним работу с JSON, немного улучшим ранее написанные
+методы, обобщив их. Научимся (или вспомним), как работать с папками и файлами с помощью Java.
+
+В рамках всего проекта это будет заключительный этап. Мы добавим выгрузку результатов в директории для внешних систем,
+организуем их именование, снова всё залогируем и посмотрим, как наша система сможет подготавливать информацию сразу в
+нескольких разных вариантах, так как в реальной жизни именно это часто и требуется. Разные системы ожидают разный формат
+данных, а также надо не забывать о конечных потребителях — пользователях, и делать для них удобный формат (то, что мы
+сделали ранее — выгрузка в Excel).
+
+➡ В ходе работы потребуется:
+JAXB;
+работа с файлами;
+Google Gson;
+обработка исключений;
+логирование.
+
+⭐ В этом уроке необходимо выполнить следующее:
+    1. С помощью Java-аннотаций JAXB и создания классов организовать структуру, соответствующую требованиям, приведённым в
+конце урока. Структура должна строго соответствовать как по содержанию, так и по наименованию полей.(+)
+
+    2. Создать класс, отвечающий за запись XML-файлов из Java-класса. В этом классе должен быть метод, принимающий на
+вход созданную в п.1 классовую структуру. Затем этот метод выполняет маршаллинг входных параметров и записывает
+в файл .xml. Рекомендуется с помощью Java-кода создать директорию и в неё складывать генерируемые файлы. Например, xmlReqs/req.xml.(+)
+
+    3. Наименование файла должно содержать дату, когда этот файл был создан, либо её long-представление.(+)
+
+    4. Содержимое XML-файла должно быть форматированным (то есть не одной строкой, с отступами).
+
+    5. Создать класс, отвечающий за запись JSON-файлов из Java-классов. В этом классе должен быть метод, принимающий на вход
+созданную в п.1 классовую структуру. Затем этот метод выполняет сериализацию входных данных в JSON-строки и записывает
+в файлы .json. Рекомендуется с помощью Java-кода создать директорию и в неё складывать генерируемые файлы. Например,
+jsonReqs/req.json.(+)
+
+    6. Наименование файла должно содержать дату, когда был собрал объект из п.1, либо её long-представление.(+)
+
+    7. При сериализации использовать ранее созданный утилитный класс JsonUtil.(+)
+
+    8. Дополнительное задание: переписать JsonUtil так, чтобы коллекции классов Student, University, Statistics обрабатывались
+одним общим методом, не привязанным к их типам.
+
+    9. Залогировать всё необходимое из созданного в этом уроке.(+)
+
+    10. В методе main() после сортировок создать объект из п.1, вызвать генерацию XML-файлов и генерацию JSON-файлов.
+
+
+Немного о генерации XML
+Java содержит пакет java.xml.bind, который позволяет использовать JAXB-маршаллер. Этот инструмент способен получить на
+вход класс и преобразовать его в XML-структуру.
+
+Для того чтобы в классах указывать, какие поля нужны или не нужны, а также как их назвать, нужно использовать ряд аннотаций:
+
+@XmlRootElement(name = "имя_для_записи") — ставится над классом, указывает, что это корневой класс XML-структуры.
+Параметр name задаёт имя, которое будет использовано для этого уровня структуры в XML.
+@XmlAccessorType(объект_класса_XmlAccessorType) — ставится так же над классом, параметр указывает, что является
+элементами XML-структуры (поля, геттеры/сеттеры и т.д.).
+
+@XmlElement(name = "имя_для_записи") — ставится, например, над полями класса, указывает их имена для XML-структуры.
+@XmlElementWrapper(name = "имя_для_записи") — ставится, например, над полем-коллекцией в классе, чтобы указать, что
+элементы коллекции должны быть обёрнуты внутрь структуры с указанным именем.
+
+@XmlTransient — ставится, например, над полями класса, указывает, что данное поле не должно участвовать в
+маршаллинге/анмаршаллинге, то есть должно пропускаться.
+
+Зачем нужно то, что в итоге получилось?
+Часто бывает так, что ваша система работает не сама по себе, а взаимодействует с другими системами, обменивается с ними
+данными. Чаще всего используется обмен данных, например через REST API, но встречаются и другие случаи. Иногда сторонние
+системы могут получать ваши данные, заходя на сервер и забирая из определенной директории подготовленные файлы. Чтобы
+системы понимали друг друга, необходимо придерживаться общего формата представления данных, поэтому XML-структура должна
+строго соответствовать требуемой в том или ином случае.
+
+В данном проекте мы реализовали подобный пример, когда исходные данные заполняются человеком вручную в табличном файле,
+далее отдаются нашей системе на обработку и сбор статистических данных, а затем оформляются в требуемые форматы и
+кладутся в подготовленные директории, чтобы сторонние системы смогли забрать эту статистику себе и каким-либо образом
+продолжить использование этих данных. Так как системы бывают разные и мы не всегда можем на них влиять (например,
+система давно написана кем-то сторонним и не поддерживается), могут требоваться разные представления одних и тех же
+данных. Поэтому мы генерируем файлы JSON и XML, а также Excel-файл для возвращения нашим же пользователям обработанных
+данных.
+
+Пример требуемой XML-структуры (сгенерировано на основе данных из используемого в уроках Excel-файла):
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root>
+    <studentsInfo>
+        <studentEntry>
+            <studentName>Петров П. А.</studentName>
+            <universityId>0001-high</universityId>
+            <avgScore>5.0</avgScore>
+        </studentEntry>
+        <studentEntry>
+            <studentName>Алексеев С. В.</studentName>
+            <universityId>0001-high</universityId>
+            <avgScore>5.0</avgScore>
+        </studentEntry>
+        <studentEntry>
+            <studentName>Соколов В. В.</studentName>
+            <universityId>0004-high</universityId>
+            <avgScore>4.8</avgScore>
+        </studentEntry>
+        <studentEntry>
+            <studentName>Иванов А. Г.</studentName>
+            <universityId>0001-high</universityId>
+            <avgScore>4.8</avgScore>
+        </studentEntry>
+        <studentEntry>
+            <studentName>Васильев В. П.</studentName>
+            <universityId>0001-high</universityId>
+            <avgScore>4.7</avgScore>
+        </studentEntry>
+        <studentEntry>
+            <studentName>Козлов М. В.</studentName>
+            <universityId>0002-high</universityId>
+            <avgScore>4.6</avgScore>
+        </studentEntry>
+        <studentEntry>
+            <studentName>Игнатьев М. М.</studentName>
+            <universityId>0003-high</universityId>
+            <avgScore>4.3</avgScore>
+        </studentEntry>
+        <studentEntry>
+            <studentName>Фёдоров А. И.</studentName>
+            <universityId>0002-high</universityId>
+            <avgScore>4.2</avgScore>
+        </studentEntry>
+        <studentEntry>
+            <studentName>Иванов И. А.</studentName>
+            <universityId>0002-high</universityId>
+            <avgScore>4.0</avgScore>
+        </studentEntry>
+        <studentEntry>
+            <studentName>Витальев В. А.</studentName>
+            <universityId>0001-high</universityId>
+            <avgScore>4.0</avgScore>
+        </studentEntry>
+        <studentEntry>
+            <studentName>Сидоров Е. Г.</studentName>
+            <universityId>0004-high</universityId>
+            <avgScore>3.9</avgScore>
+        </studentEntry>
+    </studentsInfo>
+    <universitiesInfo>
+        <universityEntry>
+            <universityId>0005-high</universityId>
+            <universityName>Самарский Медицинский Институт</universityName>
+            <universityProfile>MEDICINE</universityProfile>
+        </universityEntry>
+        <universityEntry>
+            <universityId>0003-high</universityId>
+            <universityName>Московский Государственный Медицинский Университет</universityName>
+            <universityProfile>MEDICINE</universityProfile>
+        </universityEntry>
+        <universityEntry>
+            <universityId>0002-high</universityId>
+            <universityName>Московский Придуманный Институт</universityName>
+            <universityProfile>PHYSICS</universityProfile>
+        </universityEntry>
+        <universityEntry>
+            <universityId>0007-high</universityId>
+            <universityName>Казанский Университет Вычислений</universityName>
+            <universityProfile>MATHEMATICS</universityProfile>
+        </universityEntry>
+        <universityEntry>
+            <universityId>0001-high</universityId>
+            <universityName>Московский Выдуманный Университет</universityName>
+            <universityProfile>PHYSICS</universityProfile>
+        </universityEntry>
+        <universityEntry>
+            <universityId>0004-high</universityId>
+            <universityName>Тамбовский Университет Медицины</universityName>
+            <universityProfile>MEDICINE</universityProfile>
+        </universityEntry>
+        <universityEntry>
+            <universityId>0006-high</universityId>
+            <universityName>Воронежский Литературно-Переводческий Университет</universityName>
+            <universityProfile>LINGUISTICS</universityProfile>
+        </universityEntry>
+    </universitiesInfo>
+    <statisticalInfo>
+        <statisticsEntry>
+            <universityProfile>LINGUISTICS</universityProfile>
+            <avgScore>0.0</avgScore>
+        </statisticsEntry>
+        <statisticsEntry>
+            <universityProfile>MEDICINE</universityProfile>
+            <avgScore>4.33</avgScore>
+        </statisticsEntry>
+        <statisticsEntry>
+            <universityProfile>MATHEMATICS</universityProfile>
+            <avgScore>0.0</avgScore>
+        </statisticsEntry>
+        <statisticsEntry>
+            <universityProfile>PHYSICS</universityProfile>
+            <avgScore>4.54</avgScore>
+        </statisticsEntry>
+    </statisticalInfo>
+    <processedAt>2021-04-11T18:39:17.285+03:00</processedAt>
+</root>

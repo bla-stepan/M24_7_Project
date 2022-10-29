@@ -26,9 +26,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-
         LogManager.getLogManager().readConfiguration(Main.class.getResourceAsStream("/logging.properties"));//запускаем JUL выполнив код ниже для записи в логов в консоль и файл
-
 
         logger.log(Level.INFO, "программа запущена");//логгер при запуске программы
         //создаем list для студентов задаем методом из класса чтения файла
@@ -36,19 +34,12 @@ public class Main {
 
         //создаем интерфейс студенткомпаратор и вызываем метод утилит-класса для студента и передаем в метод нужный класс компаратора
         StudentComparator studentComparator = ComparatorEnumUtil.getStudentComparator(StudentComparatorEnum.FULL_NAME);
-        //заменить цикл стримом
-//        for (Student student : studentList) {
-//            System.out.println(student);
-//        }
         //создаем стрим, сортируем по компаратору, каждый печатаем
         studentList.stream().sorted(studentComparator);//.forEach(System.out::println);
 
         List<University> universityList = XlsReader.readerFileUniversity(fileName);
         //делаем компаратор
         UniversityComparator universityComparator = ComparatorEnumUtil.getUniversityComparator(UniversityComparatorEnum.PROFILE);
-//        for (University university: universityList){
-//            System.out.println(university);
-//        }
         universityList.stream().sorted(universityComparator);//.forEach(System.out::println);
 
         //пункт 4 реализовать сериализацию коллекций и вывести json в консоль

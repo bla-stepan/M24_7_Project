@@ -60,5 +60,13 @@ public class JsonUtil {
         //сразу все в возврате метода
         return new Gson().fromJson(universityListJson, new TypeToken<List<University>>(){}.getType());
     }
+    //метод серриализации коллекции в json
+    /*
+    Дополнительное задание: переписать JsonUtil так, чтобы коллекции классов Student, University, Statistics обрабатывались
+одним общим методом, не привязанным к их типам.
+     */
+    public static String listToJson(List<?> list){//тип неопределен
 
+        return new GsonBuilder().setPrettyPrinting().create().toJson(list);
+    }
 }
