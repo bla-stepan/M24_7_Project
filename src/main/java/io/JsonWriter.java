@@ -63,7 +63,7 @@ public class JsonWriter {
     public static void getStatisticsJson(Information information) {
         String statisticsJson = JsonUtil.listToJson(information.getStatistics());
         try {
-            FileOutputStream outputStream = new FileOutputStream("json/statistics" + information.getDate().getTime() + ".json");
+            FileOutputStream outputStream = new FileOutputStream("jsonReqs/statistics" + information.getDate().getTime() + ".json");
             outputStream.write(statisticsJson.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             logger.log(Level.SEVERE, "ошибка создания statisticsJson", e);

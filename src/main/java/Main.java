@@ -2,8 +2,11 @@ import comparator.StudentComparator;
 import comparator.UniversityComparator;
 import enums.StudentComparatorEnum;
 import enums.UniversityComparatorEnum;
+import io.JsonWriter;
 import io.XlsReader;
 import io.XlsWriter;
+import io.XmlWriter;
+import model.Information;
 import model.Statistics;
 import model.Student;
 import model.University;
@@ -12,6 +15,7 @@ import util.StudUniverToStatisticUtil;
 
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -33,14 +37,14 @@ public class Main {
         List<Student> studentList = XlsReader.readerFileStudent(fileName);
 
         //создаем интерфейс студенткомпаратор и вызываем метод утилит-класса для студента и передаем в метод нужный класс компаратора
-        StudentComparator studentComparator = ComparatorEnumUtil.getStudentComparator(StudentComparatorEnum.FULL_NAME);
+        StudentComparator studentComparator = ComparatorEnumUtil.getStudentComparator(StudentComparatorEnum.AVG_EXAM_SCORE);
         //создаем стрим, сортируем по компаратору, каждый печатаем
-        studentList.stream().sorted(studentComparator);//.forEach(System.out::println);
+        studentList.stream().sorted(studentComparator);
 
         List<University> universityList = XlsReader.readerFileUniversity(fileName);
         //делаем компаратор
-        UniversityComparator universityComparator = ComparatorEnumUtil.getUniversityComparator(UniversityComparatorEnum.PROFILE);
-        universityList.stream().sorted(universityComparator);//.forEach(System.out::println);
+        UniversityComparator universityComparator = ComparatorEnumUtil.getUniversityComparator(UniversityComparatorEnum.YEAR_OF_FOUNDATION);
+        universityList.stream().sorted(universityComparator);
 
         //пункт 4 реализовать сериализацию коллекций и вывести json в консоль
 //        System.out.println("реализовать сериализацию коллекций и вывести json в консоль");
@@ -74,6 +78,14 @@ public class Main {
         // коллекцию в метод генерации XLSX-файла.
         List<Statistics> statisticsList = StudUniverToStatisticUtil.getStatisticList(studentList, universityList);
         XlsWriter.tableGenerator(statisticsList, "src/main/resources/statisticInfo.xlsx");
+
+        Information information = new Information()
+                .setStudents(studentList)
+                .setUniversities(universityList)
+                .setStatistics(statisticsList)
+                .setDate(new Date());
+        XmlWriter.createXmlReqs(information);
+        JsonWriter.createJsonReq(information);
 
         logger.log(Level.INFO, "Программа завершила работу успешно");//создаем логгер в конце программы
     }

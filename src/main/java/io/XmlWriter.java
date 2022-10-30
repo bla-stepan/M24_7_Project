@@ -9,8 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,8 +26,6 @@ public class XmlWriter {
     }
 
     public static void createXmlReqs(Information information) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy MMMM dd");
-        String date = dateFormat.format(Calendar.getInstance());
 
         try {
             //логируем начало преобразования класса в XML
@@ -50,7 +46,7 @@ public class XmlWriter {
             }
             //создаем объект файла и логируем
             logger.log(Level.INFO, "старт создания файла");
-            File file = new File("xmlReqs/Req" + date + ".xml");
+            File file = new File("xmlReqs/Req" + new Date().getTime() + ".xml");
             marshaller.marshal(information, file);
         } catch (JAXBException e) {
             logger.log(Level.SEVERE, "Ошибка создания файла XML", e);
